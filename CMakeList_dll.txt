@@ -1,0 +1,48 @@
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_GLIBCXX_USE_CXX11_ABI=0")
+
+# 设置cmake版本
+cmake_minimum_required(VERSION 3.19)
+
+# 项目名称
+set(PROJECT_NAME RevitDataAnalysisPyRevitCpp)
+
+# 建立项目
+project(${PROJECT_NAME})
+
+# 设置编译版本
+set(CMAKE_CXX_STANDARD 14)
+
+# 设置头文件路径
+set(INC_DIR ./include)
+set(EIGEN_DIR ./include/eigen-3.4.0/eigen-3.4.0)
+set(OpenCV_DIR D:/opencv/build)
+
+# 寻找OpenCV库
+find_package(OpenCV REQUIRED)
+# 设置库文件路径
+set(LINK_DIR ./lib)
+
+# 引入头文件
+include_directories(
+        ${INC_DIR}
+        ${EIGEN_DIR}
+        ${OpenCV_INCLUDE_DIRS}
+)
+# Opencv Package
+FIND_PACKAGE(OpenCV REQUIRED )
+# 引入库文件
+link_directories(${LINK_DIR})
+
+
+file(GLOB src pyRevit/*.cpp pyRevit/tools/*.cpp ./*.cpp)
+SET (ALL_SRCS
+        ${src}
+        )
+
+add_library(${PROJECT_NAME} SHARED ${ALL_SRCS})
+INSTALL(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ./lib)
+
+## 添加链接库
+target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBS})
+
+
